@@ -7,10 +7,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToOne;
 @Entity
 @Table(name = "stock", catalog = "mkyong", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "STOCK_NAME"),
@@ -22,8 +25,25 @@ public class Stock implements Serializable {
 	private Long stockId;
 	private String stockCode;
 	private String stockName;
-	private Date createdDate;
+	private StockDetail stockDetail;
 	
+	private Date createdDate;
+	public Stock() {
+	}
+ 
+	public Stock(String stockCode, String stockName, Date createdDate) {
+		this.stockCode = stockCode;
+		this.stockName = stockName;
+		this.createdDate = createdDate;
+	}
+ 
+	public Stock(String stockCode, String stockName, StockDetail stockDetail, Date createdDate) {
+		this.stockCode = stockCode;
+		this.stockName = stockName;
+		this.stockDetail = stockDetail;
+		this.createdDate = createdDate;
+	}
+ 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "STOCK_ID", unique = true, nullable = false)
@@ -41,7 +61,7 @@ public class Stock implements Serializable {
 	public void setStockCode(String stockCode) {
 		this.stockCode = stockCode;
 	}
-	@Column(name = "STOCK_NAME", unique = true, nullable = false, length = 20)
+	@Column(name = "STOCK_NAME", unique = false, nullable = false, length = 20)
 	public String getStockName() {
 		return stockName;
 	}
@@ -55,6 +75,14 @@ public class Stock implements Serializable {
 	}
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+	
+	@OneToOne(mappedBy = "stock", cascade = CascadeType.ALL)
+	public StockDetail getStockDetail() {
+		return stockDetail;
+	}
+	public void setStockDetail(StockDetail stockDetail) {
+		this.stockDetail = stockDetail;
 	}
  
 	//getter and setter methods...

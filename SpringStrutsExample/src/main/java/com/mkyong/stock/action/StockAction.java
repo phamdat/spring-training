@@ -10,6 +10,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import com.mkyong.stock.bo.StockBo;
 import com.mkyong.stock.model.Stock;
@@ -29,15 +30,14 @@ public class StockAction extends ActionSupport implements ModelDriven{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public String stockCodeKwd;
 	
-	@Autowired
 	StockBo stockBo;
  
 	Stock stock = new Stock();
 	List<Stock> stockList = new ArrayList<Stock>();
  
-//	StockBo stockBo;
-//	//DI via Spring
+	@Autowired
 	public void setStockBo(StockBo StockBo) {
 		this.stockBo = StockBo;
 	}
@@ -64,7 +64,6 @@ public class StockAction extends ActionSupport implements ModelDriven{
 		//reload the Stock list
 		stockList = null;
 		stockList = stockBo.listStock();
-		Stock s = stockBo.findByStockCode("st001");
  
 		return "success";
  
@@ -80,24 +79,36 @@ public class StockAction extends ActionSupport implements ModelDriven{
  
 	}
 	
-	@Action(value = "/editStockAction")
-	public String editStock() throws Exception{
-		stock = stockBo.findByStockCode(stock.getStockCode());
-		return "edit";
- 
-	}
-	
-	 @Action(value = "/deleteStockAction")
+	@Action(value = "/deleteStockAction")
 	public String deleteStock() throws Exception{
-		 System.out.println("Hien Debug :....................");
-		 System.out.println("Hien Debug :....................");
+		System.out.println("Hien Debug :....................");
+		System.out.println("Hien Debug :....................");
 		Stock ob = stockBo.findByStockCode(stock.getStockCode());
 		stockBo.delete(ob);
 		stockList = stockBo.listStock();
- 
 		return "success";
  
 	}
+	
+	//list all Stocks
+	@Action(value = "/searchStockAction")
+	public String searchStock() throws Exception{
+			stockList = new ArrayList<Stock>();
+			Stock obj = null;
+			if(stockCodeKwd == null || stockCodeKwd.trim().equals("") ) {
+				stockList = stockBo.listStock();
+				return "success";
+			} else {
+				obj = stockBo.findByStockCode(stockCodeKwd);
+			}
+			
+			if(obj != null) {
+				stockList.add(obj);
+			}
+			
+			return "success";
+	}
+	
 	 public String execute() throws Exception {
 		 	
 		 	stockList = stockBo.listStock();
