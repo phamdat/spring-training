@@ -110,9 +110,16 @@ public class StockAction extends ActionSupport implements ModelDriven{
 	}
 	
 	 public String execute() throws Exception {
-		 	
+		 	System.out.println("hien:");
 		 	stockList = stockBo.listStock();
 			return "success";
 	 
 		}
+	 
+//	 public String execute() throws Exception {
+//		 	
+//		 	stockList = stockBo.listStock();
+//			return "success";
+//	 
+//		}
 }
