@@ -69,7 +69,7 @@ public class StockAction extends ActionSupport implements ModelDriven{
  
 	}
  
-	//list all Stocks
+	//list all Stocksaaaaa
 	@Action(value = "/listStockAction")
 	public String listStock() throws Exception{
  
@@ -110,16 +110,9 @@ public class StockAction extends ActionSupport implements ModelDriven{
 	}
 	
 	 public String execute() throws Exception {
-		 	System.out.println("hien:");
+		 	
 		 	stockList = stockBo.listStock();
 			return "success";
 	 
 		}
-	 
-//	 public String execute() throws Exception {
-//		 	
-//		 	stockList = stockBo.listStock();
-//			return "success";
-//	 
-//		}
 }
